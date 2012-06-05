@@ -1,6 +1,7 @@
 package de.IF_EF.Bermuda;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.renderer.Camera;
 
 /**
  * Klasse der Anwendung
@@ -16,11 +17,17 @@ public class App extends SimpleApplication {
 	private static GraphicsHelper graphicsHelper;
         private static PhysicsHelper physicsHelper;
         
+    public static void main(String[] args){
+        App app = new App();
+        app.start(); // start the game
+    }
+    
+        
     @Override
     public void simpleInitApp() {
-        PreConfig con = new PreConfig();
+        //PreConfig con = new PreConfig();
         gameHelper = new GameHelper();
-        graphicsHelper = new GraphicsHelper(125, 125, "GrassTile01.jpg");
+        graphicsHelper = new GraphicsHelper(125, 125, "GrassTile01.jpg", this);
         physicsHelper = new PhysicsHelper(this);
     }
     
@@ -35,5 +42,6 @@ public class App extends SimpleApplication {
     public static PhysicsHelper getPhysicsHelper() {
         return physicsHelper;
     }
+    
 
 }

@@ -1,6 +1,8 @@
 package de.IF_EF.Bermuda;
 
-import com.jme3.app.SimpleApplication;
+import com.jme3.app.Application;
+import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.renderer.Camera;
 
 /**
@@ -10,28 +12,32 @@ import com.jme3.renderer.Camera;
  */
 
 
-public class GraphicsHelper extends SimpleApplication {
-
+public class GraphicsHelper extends AbstractAppState {
 	private Graphics graphicsInstance;
         private Camera cam;
+        private App app;
 
-	public GraphicsHelper(int groundX, int groundZ, String groundTextureUrl) {
+	public GraphicsHelper(int groundX, int groundZ, String groundTextureUrl, App app) {
 		graphicsInstance = new Graphics();
-                
+                this.app = app;
+                app.getStateManager().attach(this);
 	}
+        
+        @Override
+        public void initialize(AppStateManager stateManager, Application app) {
+            super.initialize(stateManager, app);
+            cam = app.getCamera();
+        }
         
         public Graphics getGraphicsInstance()  {
             return graphicsInstance;
         }
         
         
-        public Camera getActiveCamera() {
+        public Camera getCamera() {
             return cam;
         }
 
-    @Override
-    public void simpleInitApp() {
         
-    }
         
 }
