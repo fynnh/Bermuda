@@ -1,10 +1,12 @@
+package de.IF_EF.Bermuda;
+
 /**
  * Klasse mit sämtlichen Konfigurationen 
  * für das aktuelle Spiel
  * @author 
  * @version 1.0
  */
-package de.IF_EF.Bermuda;
+
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -30,10 +32,7 @@ public class ConfigHelper {
 	private static int groundZ;
 	private static String groundTextureUrl;
 	private static HashMap<String, String> cubes = new HashMap<String, String>();
-	private static Application application;
-	private static GameHelper gameHelper;
-	private static GraphicsHelper graphicsHelper;
-
+        
 	public static void createConfig(File file) {
 		System.out.println(file);
 		ZipEntry zipEntry = new ZipEntry("config.xml");
@@ -100,28 +99,13 @@ public class ConfigHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		createApp();
 		
-	}
-
-	public static void createApp() {
-		graphicsHelper = new GraphicsHelper(groundX, groundZ, groundTextureUrl);
 	}
 
 	public static String getBlockTextureUrl(String block) {
 		return cubes.get(block);
 	}
 
-	public static Application getApplication() {
-		return application;
-	}
 
-	public static GameHelper getGameHelper() {
-		return gameHelper;
-	}
-
-	public static GraphicsHelper getGraphicsHelper() {
-		return graphicsHelper;
-	}
 
 }

@@ -4,7 +4,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.Camera;
 
 /**
- * Klasse für die Kommunikation zwischen Logik und Bildschirmausgabe
+ * Klasse fÃ¼r die Kommunikation zwischen Logik und Bildschirmausgabe
  * @author Fynn Hauptmeier
  * @version 1.0
  */
