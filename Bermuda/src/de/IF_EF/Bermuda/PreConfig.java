@@ -1,3 +1,5 @@
+package de.IF_EF.Bermuda;
+
 /**
  * Eine Klasse, deren Objekt eine Swing-Oberfläche erzeugt,
  * mit der die Konfiguration aus einer ZIP-Datei erstellt wird
@@ -5,9 +7,23 @@
  * @author Fynn Hauptmeier
  * @version 1.0
  */
+;
 
-package de.IF_EF.Bermuda;
-
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import javax.swing.*;
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import javax.swing.*;
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import javax.swing.*;
+import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
@@ -19,7 +35,7 @@ public class PreConfig {
 	private JFrame window;
 
 	private static JFileChooser fileChooser = new JFileChooser(
-			System.getProperty("user.dir"));
+                            System.getProperty("user.dir"));
 
 	/**
 	 * 
