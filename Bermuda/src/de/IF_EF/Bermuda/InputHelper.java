@@ -1,25 +1,25 @@
 package de.IF_EF.Bermuda;
 
+import com.jme3.app.Application;
+import com.jme3.app.state.AppState;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.renderer.RenderManager;
 
-public class MoveHelper implements ActionListener {
+public class InputHelper extends com.jme3.app.state.AbstractAppState implements ActionListener {
 
-	private Camera cam;
 	private InputManager inputManager;
 	private Vector3f walkDirection = new Vector3f();
-	private boolean left = false;
-	private boolean right = false;
-	private boolean up = false;
-	private boolean down = false;
+	private boolean keys[];
 
-	public MoveHelper(Camera cam, InputManager inputManager) {
+	public InputHelper(InputManager inputManager) {
 		this.inputManager = inputManager;
-		this.cam = cam;
+                keys = new boolean[5]; 
 		setUpKeys();
 	}
 
@@ -41,17 +41,16 @@ public class MoveHelper implements ActionListener {
 	 * yet, we just keep track of the direction the user pressed.
 	 */
 	public void onAction(String binding, boolean value, float tpf) {
-		if (binding.equals("Left")) {
-			left = value;
-			System.out.println("hallo");
+            if (binding.equals("Left")) {
+			keys[0] = value;
 		} else if (binding.equals("Right")) {
-			right = value;
+			keys[1] = value;
 		} else if (binding.equals("Up")) {
-			up = value;
+			keys[2] = value;
 		} else if (binding.equals("Down")) {
-			down = value;
+			keys[3] = value;
 		} else if (binding.equals("Jump")) {
-			App.getPhysicsHelper().playerCam.jump();
+			keys[4] = value;
 		}
 
 	}
@@ -63,23 +62,9 @@ public class MoveHelper implements ActionListener {
 	 * command is what lets a physics-controlled player walk. We also make sure
 	 * here that the camera moves with player.
 	 */
-	public void simpleUpdate(float tpf) {
+    @Override
+	public void update(float tpf) {
+            App.getPhysicsHelper().moveCamera(keys);
+        }
 
-		Vector3f camDir = cam.getDirection().clone().multLocal(0.6f);
-		Vector3f camLeft = cam.getLeft().clone().multLocal(0.4f);
-		walkDirection.set(0, 0, 0);
-		if (left) {
-			walkDirection.addLocal(camLeft);
-		}
-		if (right) {
-			walkDirection.addLocal(camLeft.negate());
-		}
-		if (up) {
-			walkDirection.addLocal(camDir);
-		}
-		if (down) {
-			walkDirection.addLocal(camDir.negate());
-		}
-		App.getPhysicsHelper().playerCam.setWalkDirection(walkDirection);
-	}
 }

@@ -77,7 +77,7 @@ public class GraphicsHelper extends AbstractAppState {
 		// mat1.setColor("Diffuse", ColorRGBA.Brown);
 		floor.setMaterial(mat1);
 		root.attachChild(floor);
-		App.getPhysicsHelper().addPhysics(floor);
+		App.getPhysicsHelper().addPhysics(floor, 0.0f);
 	}
 
 	protected void makeSky() {
@@ -135,9 +135,8 @@ public class GraphicsHelper extends AbstractAppState {
 				App.getConfigHelper().getCubeTextureUrl(name));
 		material.setTexture("ColorMap", texture);
 		cube.setMaterial(material);
-
-		// App.getPhysicsHelper().addPhysics(cube);
 		cubes.attachChild(cube);
+                App.getPhysicsHelper().addPhysics(cube, 0.0f);
 	}
 
 }

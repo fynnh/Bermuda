@@ -32,7 +32,7 @@ public class App extends SimpleApplication {
 	private static GameHelper gameHelper;
 	private static GraphicsHelper graphicsHelper;
 	private static PhysicsHelper physicsHelper;
-	private static MoveHelper moveHelper;
+	private static InputHelper inputHelper;
 	private static PickHelper pickHelper;
 	// private static ConfigHelper configHelper;
 	private static ConfigDummy configHelper;
@@ -59,7 +59,8 @@ public class App extends SimpleApplication {
 		graphicsHelper = new GraphicsHelper(this);
 		stateManager.attach(graphicsHelper);
 		graphicsHelper.initialize(stateManager, this);
-		moveHelper = new MoveHelper(cam, this.getInputManager());
+		inputHelper = new InputHelper(this.getInputManager());
+                stateManager.attach(inputHelper);
 		pickHelper = new PickHelper(cam, this.getInputManager());
 
 	}
@@ -106,8 +107,8 @@ public class App extends SimpleApplication {
 		return cam;
 	}
 
-	public static MoveHelper getMoveHelper() {
-		return moveHelper;
+	public static InputHelper getInputHelper() {
+		return inputHelper;
 	}
 
 	public static ConfigDummy getConfigHelper() {

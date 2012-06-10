@@ -13,6 +13,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.control.Control;
+import com.jme3.scene.shape.Box;
 
 
 /**
@@ -44,25 +45,46 @@ public class PhysicsHelper extends BulletAppState {
         this.app = app;
         graphicsHelper = App.getGraphicsHelper();
         initCamera();
+        getPhysicsSpace().enableDebug(app.getAssetManager());
     }
 
     private void initCamera() {
-        CapsuleCollisionShape cam = new CapsuleCollisionShape(0.1f, 1.8f);
+        CapsuleCollisionShape cam = new CapsuleCollisionShape(1.2f, 1.8f);
         playerCam = new CharacterControl(cam, 0.1f);
-        playerCam.setJumpSpeed(20.0f);
-        playerCam.setGravity(1);
-        playerCam.setFallSpeed(1);
-        playerCam .setPhysicsLocation(new Vector3f(0, 10, 0));
+        playerCam.setJumpSpeed(2);
+        playerCam.setGravity(3);
+        playerCam.setFallSpeed(3);
+        playerCam.setPhysicsLocation(new Vector3f(0, 10, 0));
         this.getPhysicsSpace().add(playerCam);
     }
     
-    public void move() {
-        
+    public void moveCamera(boolean[] dir) {
+            Vector3f direc = app.getCamera().getDirection().multLocal(0.07f);
+            direc.y = 0;
+            Vector3f left = app.getCamera().getLeft().multLocal(0.02f);
+            left.y = 0;
+            Vector3f playerDirec = new Vector3f(0f, 0f, 0f);           
+            if(dir[0]) {
+                playerDirec.addLocal(left);
+            }
+            if(dir[1]) {
+                playerDirec.addLocal(left.negate());
+            }
+            if (dir[2]) {
+                playerDirec.addLocal(direc);
+            }
+            if (dir[3]) {
+                playerDirec.addLocal(direc.negate());
+            }
+            if (dir[4]) {
+                playerCam.jump();
+            }
+            playerCam.setWalkDirection(playerDirec);
     }
     
-    public void addPhysics(Geometry geo) {
+    public void addPhysics(Geometry geo, float mass) {
         CollisionShape coll = CollisionShapeFactory.createMeshShape(geo);
-        Control phy = new RigidBodyControl(coll, tpf);
+        RigidBodyControl phy = new RigidBodyControl(coll, mass);
         geo.addControl(phy);
         getPhysicsSpace().add(phy);
     }
