@@ -29,11 +29,13 @@ public class InputHelper extends com.jme3.app.state.AbstractAppState implements 
 		inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
 		inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
 		inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
+		inputManager.addMapping("Choose", new KeyTrigger(KeyInput.KEY_C));
 		inputManager.addListener(this, "Left");
 		inputManager.addListener(this, "Right");
 		inputManager.addListener(this, "Up");
 		inputManager.addListener(this, "Down");
 		inputManager.addListener(this, "Jump");
+		inputManager.addListener(this, "Choose");
 	}
 
 	/**
@@ -51,6 +53,18 @@ public class InputHelper extends com.jme3.app.state.AbstractAppState implements 
 			keys[3] = value;
 		} else if (binding.equals("Jump")) {
 			keys[4] = value;
+		}
+		else if (binding.equals("Choose")&& !value) {
+			System.out.println("hallo");
+			if(!App.getGraphicsHelper().isCubesChooserActive())
+			{
+				App.getGraphicsHelper().startCubesChooser();
+			}
+			else
+			{
+				App.getGraphicsHelper().stopCubesChooser();
+			}
+			
 		}
 
 	}

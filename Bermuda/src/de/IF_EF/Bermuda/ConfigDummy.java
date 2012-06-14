@@ -19,7 +19,7 @@ public class ConfigDummy {
 		groundZ = 1000;
 		groundTextureUrl = "Textures/grassTile01.jpg";
 		skyUrl = "Textures/Sky/Bright/FullskiesBlueClear03.dds";
-		cubevariants = new String[10];
+		cubevariants = new String[1];
 		cubevariants[0] = "grass";
 		cubes = new HashMap<String, String>();
 		cubes.put("grass", "Textures/grassTile01.jpg");
@@ -78,4 +78,8 @@ public class ConfigDummy {
 		return questCount;
 	}
 
+	public String[] getCubeVariants()
+	{
+		return cubevariants;
+	}
 }

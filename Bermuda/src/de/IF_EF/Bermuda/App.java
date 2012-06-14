@@ -59,10 +59,11 @@ public class App extends SimpleApplication {
 		graphicsHelper = new GraphicsHelper(this);
 		stateManager.attach(graphicsHelper);
 		graphicsHelper.initialize(stateManager, this);
+		new GuiHelper();
 		inputHelper = new InputHelper(this.getInputManager());
                 stateManager.attach(inputHelper);
 		pickHelper = new PickHelper(cam, this.getInputManager());
-
+		
 	}
 
 	@Override

@@ -38,92 +38,97 @@ public class PickHelper implements ActionListener {
 	}
 
 	public void onAction(String name, boolean keyPressed, float tpf) {
-		if (name.equals("Remove") && !keyPressed) {
+		if (!App.getGraphicsHelper().isCubesChooserActive()) {
+			if (name.equals("Remove") && !keyPressed) {
 
-			// 1. Reset results list.
-			CollisionResults results = new CollisionResults();
-			// 2. Aim the ray from cam loc to cam direction.
-			Ray ray = new Ray(cam.getLocation(), cam.getDirection());
-			// 3. Collect intersections between Ray and Shootables in results
-			// list.
-			App.getGraphicsHelper().getCubesNode().collideWith(ray, results);
+				// 1. Reset results list.
+				CollisionResults results = new CollisionResults();
+				// 2. Aim the ray from cam loc to cam direction.
+				Ray ray = new Ray(cam.getLocation(), cam.getDirection());
+				// 3. Collect intersections between Ray and Shootables in
+				// results
+				// list.
+				App.getGraphicsHelper().getCubesNode()
+						.collideWith(ray, results);
 
-			if (results.size() > 0) {
-				App.getGameHelper().removeCube(
-						results.getClosestCollision().getGeometry().getName());
-				App.getGraphicsHelper().removeCube(
-						results.getClosestCollision().getGeometry());
-			}
-		} else if (name.equals("Add") && !keyPressed) {
+				if (results.size() > 0) {
+					App.getGameHelper().removeCube(
+							results.getClosestCollision().getGeometry()
+									.getName());
+					App.getGraphicsHelper().removeCube(
+							results.getClosestCollision().getGeometry());
+				}
+			} else if (name.equals("Add") && !keyPressed) {
 
-			// 1. Reset results list.
-			CollisionResults results = new CollisionResults();
-			// 2. Aim the ray from cam loc to cam direction.
-			Ray ray = new Ray(cam.getLocation(), cam.getDirection());
-			// Find Collisions
-			App.getGraphicsHelper().getRootNode().collideWith(ray, results);
+				// 1. Reset results list.
+				CollisionResults results = new CollisionResults();
+				// 2. Aim the ray from cam loc to cam direction.
+				Ray ray = new Ray(cam.getLocation(), cam.getDirection());
+				// Find Collisions
+				App.getGraphicsHelper().getRootNode().collideWith(ray, results);
 
-			// Add result
-			if (results.size() > 0)
+				// Add result
+				if (results.size() > 0)
 
-			{
-				Vector3f pt = null;
-				int x = 0;
-				int y = 0;
-				int z = 0;
-				
-				if (results.getClosestCollision().getGeometry().getName() != "ground") {
-					Mesh mesh = results.getClosestCollision().getGeometry()
-							.getMesh();
-					if (mesh instanceof Box) {
-						Box box = (Box) mesh;
-						pt = box.getCenter();
+				{
+					Vector3f pt = null;
+					int x = 0;
+					int y = 0;
+					int z = 0;
+
+					if (results.getClosestCollision().getGeometry().getName() != "ground") {
+						Mesh mesh = results.getClosestCollision().getGeometry()
+								.getMesh();
+						if (mesh instanceof Box) {
+							Box box = (Box) mesh;
+							pt = box.getCenter();
+							x = new Double(pt.getX()).intValue();
+							y = new Double(pt.getY()).intValue();
+							z = new Double(pt.getZ()).intValue();
+
+						}
+						pt = new Vector3f(x, y + 2, z);
+					} else if (results.getClosestCollision().getGeometry()
+							.getName() == "ground") {
+
+						pt = results.getClosestCollision().getContactPoint();
+
 						x = new Double(pt.getX()).intValue();
 						y = new Double(pt.getY()).intValue();
 						z = new Double(pt.getZ()).intValue();
-
-					}
-					pt = new Vector3f(x, y + 2, z);
-				} else if (results.getClosestCollision().getGeometry()
-						.getName() == "ground") {
-
-					pt = results.getClosestCollision().getContactPoint();
-
-					x = new Double(pt.getX()).intValue();
-					y = new Double(pt.getY()).intValue();
-					z = new Double(pt.getZ()).intValue();
-					if (x % 2 != 0) {
-						if (x > 0) {
-							x++;
-						} else {
-							x--;
+						if (x % 2 != 0) {
+							if (x > 0) {
+								x++;
+							} else {
+								x--;
+							}
 						}
+
+						if (y % 2 != 0) {
+							if (y > 0) {
+								y++;
+							} else {
+								y--;
+							}
+						}
+
+						if (z % 2 != 0) {
+							if (z > 0) {
+								z++;
+							} else {
+								z--;
+							}
+						}
+						pt = new Vector3f(x, y, z);
+					}
+					if (pt != null) {
+						App.getGraphicsHelper().addCube(pt);
+						System.out.println(pt);
 					}
 
-					if (y % 2 != 0) {
-						if (y > 0) {
-							y++;
-						} else {
-							y--;
-						}
-					}
-
-					if (z % 2 != 0) {
-						if (z > 0) {
-							z++;
-						} else {
-							z--;
-						}
-					}
-					pt = new Vector3f(x, y, z);
-				}
-				if (pt != null) {
-					App.getGraphicsHelper().addCube(pt);
-					System.out.println(pt);
 				}
 
 			}
-
 		}
 	}
 }

@@ -9,6 +9,7 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -16,6 +17,8 @@ import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
+
+import de.lessvoid.nifty.Nifty;
 
 /**
  * Klasse fÃ¼r die Kommunikation zwischen Logik und Bildschirmausgabe
@@ -29,7 +32,10 @@ public class GraphicsHelper extends AbstractAppState {
 	private Camera cam;
 	private App app;
 	private Node root, cubes;
-
+	private NiftyJmeDisplay niftyDisplay;
+	private String activeCube;
+	private boolean cubesChooserActive;
+	
 	public GraphicsHelper(App app) {
 		graphicsInstance = new Graphics();
 
@@ -137,6 +143,49 @@ public class GraphicsHelper extends AbstractAppState {
 		cube.setMaterial(material);
 		cubes.attachChild(cube);
                 App.getPhysicsHelper().addPhysics(cube, 0.0f);
+	}
+	
+	public void startCubesChooser()
+	{
+		if(!cubesChooserActive)
+		{
+		System.out.println("hallo");
+		niftyDisplay = new NiftyJmeDisplay(
+			    app.getAssetManager(), app.getInputManager(), app.getAudioRenderer(), app.getGuiViewPort());
+			/** Create a new NiftyGUI object */
+			Nifty nifty = niftyDisplay.getNifty();
+			/** Read your XML and initialize your custom ScreenController */
+			nifty.fromXml("Interface/cubesChooser.xml", "start", new GuiController());
+			// nifty.fromXml("Interface/helloworld.xml", "start", new MySettingsScreen(data));
+			// attach the Nifty display to the gui view port as a processor
+			app.getGuiViewPort().addProcessor(niftyDisplay);
+			// disable the fly cam
+			app.getFlyCam().setDragToRotate(true);
+			
+			cubesChooserActive=true;
+		}
+			
+	}
+	
+	public void stopCubesChooser()
+	{
+		if(cubesChooserActive)
+		{
+		app.getGuiViewPort().removeProcessor(niftyDisplay);
+		app.getFlyCam().setDragToRotate(false);
+
+		
+		cubesChooserActive=false;
+		}
+	}
+
+	public void setCube(String cube)
+	{
+		activeCube=cube;
+	}
+	public boolean isCubesChooserActive()
+	{
+		return cubesChooserActive;
 	}
 
 }
