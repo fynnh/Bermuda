@@ -6,6 +6,7 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Ray;
@@ -15,10 +16,12 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.shape.Box;
 
-public class PickHelper implements ActionListener {
+public class PickHelper implements ActionListener, AnalogListener {
 
 	private InputManager inputManager;
 	private Camera cam;
+        private Geometry currCube;
+        int health;
 
 	public PickHelper(Camera cam, InputManager inputManager) {
 		this.inputManager = inputManager;
@@ -36,10 +39,11 @@ public class PickHelper implements ActionListener {
 		inputManager.addListener(this, "Remove");
 		inputManager.addListener(this, "Add");
 	}
+        
 
-	public void onAction(String name, boolean keyPressed, float tpf) {
-		if (!App.getGraphicsHelper().isCubesChooserActive()) {
-			if (name.equals("Remove") && !keyPressed) {
+    public void onAnalog(String name, float value, float tpf) {
+        		if (!App.getGraphicsHelper().isCubesChooserActive()) {
+			if (name.equals("Remove")) {
 
 				// 1. Reset results list.
 				CollisionResults results = new CollisionResults();
@@ -50,15 +54,28 @@ public class PickHelper implements ActionListener {
 				// list.
 				App.getGraphicsHelper().getCubesNode()
 						.collideWith(ray, results);
-
 				if (results.size() > 0) {
-					App.getGameHelper().removeCube(
+                                    if(results.getClosestCollision().getGeometry() == currCube) {
+                                        health -= value;
+                                        if(health <= 0) {
+                                        App.getGameHelper().removeCube(
 							results.getClosestCollision().getGeometry()
 									.getName());
+                                        
 					App.getGraphicsHelper().removeCube(
 							results.getClosestCollision().getGeometry());
+
+                                        }
+                                        System.out.println( health );
+                                    } else {
+                                        currCube = results.getClosestCollision().getGeometry();
+                                        health = 480;
+                                    }
 				}
-			} else if (name.equals("Add") && !keyPressed) {
+			}}}
+
+    public void onAction(String name, boolean isPressed, float tpf) {
+        if (name.equals("Add") && !isPressed) {
 
 				// 1. Reset results list.
 				CollisionResults results = new CollisionResults();
@@ -130,5 +147,7 @@ public class PickHelper implements ActionListener {
 
 			}
 		}
-	}
-}
+    }
+
+
+
