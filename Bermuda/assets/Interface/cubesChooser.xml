@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
+<useStyles filename="nifty-default-styles.xml"/>
+<useControls filename="nifty-default-controls.xml"/>
+<screen controller="de.IF_EF.Bermuda.GuiController" id="start">
+<layer childLayout="center" id="foreground">
+<panel align="center" childLayout="vertical" height="50%" id="panel_mid">
+<panel childLayout="horizontal" height="100%" id="row0" width="100%">
+<panel align="center" childLayout="vertical" id="grass0" width="20%">
+<image filename="Textures/grassTile01.jpg" height="90%" width="100%">
+<interact onClick="setCube(grass)"/>
+</image>
+<text font="Interface/Fonts/Default.fnt" text="grass"/>
+</panel>
+</panel>
+</panel>
+</layer>
+</screen>
+</nifty>
