@@ -89,5 +89,10 @@ public class PhysicsHelper extends BulletAppState {
         getPhysicsSpace().add(phy);
     }
     
+    public void removePhysics(Geometry geo) {
+        getPhysicsSpace().removeCollisionObject(geo.getControl(RigidBodyControl.class));
+        geo.removeControl(RigidBodyControl.class);
+    }
+    
 
 }

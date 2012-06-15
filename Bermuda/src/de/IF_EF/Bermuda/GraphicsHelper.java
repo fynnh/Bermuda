@@ -125,7 +125,7 @@ public class GraphicsHelper extends AbstractAppState {
 	}
 
 	public void removeCube(Geometry cube) {
-		App.getPhysicsHelper().removeCube(cube);
+		App.getPhysicsHelper().removePhysics(cube);
 		cubes.detachChild(cube);
 	}
 
