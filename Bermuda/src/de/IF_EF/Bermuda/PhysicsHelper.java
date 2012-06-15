@@ -51,9 +51,9 @@ public class PhysicsHelper extends BulletAppState {
     private void initCamera() {
         CapsuleCollisionShape cam = new CapsuleCollisionShape(1.2f, 1.8f);
         playerCam = new CharacterControl(cam, 0.1f);
-        playerCam.setJumpSpeed(2);
-        playerCam.setGravity(3);
-        playerCam.setFallSpeed(3);
+        playerCam.setJumpSpeed(7);
+        playerCam.setGravity(10);
+        playerCam.setFallSpeed(10);
         playerCam.setPhysicsLocation(new Vector3f(0, 10, 0));
         this.getPhysicsSpace().add(playerCam);
     }

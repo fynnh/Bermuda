@@ -4,6 +4,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.font.BitmapText;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -114,6 +115,8 @@ public class GraphicsHelper extends AbstractAppState {
 		sun.setColor(ColorRGBA.Orange);
 		sun.setDirection(new Vector3f(0.5f, -1.0f, 0.5f).normalizeLocal());
 		app.getRootNode().addLight(sun);
+                AmbientLight amb = new AmbientLight();
+                amb.setColor(ColorRGBA.DarkGray);
 	}
 
 	public Node getCubesNode() {
@@ -133,7 +136,9 @@ public class GraphicsHelper extends AbstractAppState {
 		System.out.println(center);
 		if(App.getGameHelper().addCube(activeCube))
 		{
-		addCube(center, activeCube);
+                    if (center.distance(app.getCamera().getLocation()) >= 2) {
+                        addCube(center, activeCube);
+                    }
 		}
 	}
 
