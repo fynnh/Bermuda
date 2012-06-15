@@ -19,12 +19,15 @@ public class ConfigDummy {
 		groundZ = 1000;
 		groundTextureUrl = "Textures/grassTile01.jpg";
 		skyUrl = "Textures/Sky/Bright/FullskiesBlueClear03.dds";
-		cubevariants = new String[1];
+		cubevariants = new String[2];
 		cubevariants[0] = "grass";
+		cubevariants[1] = "earth";
 		cubes = new HashMap<String, String>();
 		cubes.put("grass", "Textures/grassTile01.jpg");
+		cubes.put("earth", "Textures/earth.jpg");
 		inventar = new HashMap<String, Integer>();
 		inventar.put("grass", 1000);
+		inventar.put("earth", 1000);
 		quests = null;
 		questCount = 0;
 

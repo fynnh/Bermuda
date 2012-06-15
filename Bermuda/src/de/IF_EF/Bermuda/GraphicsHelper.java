@@ -45,6 +45,7 @@ public class GraphicsHelper extends AbstractAppState {
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
 		super.initialize(stateManager, app);
+		activeCube=App.getConfigHelper().getCubeVariants()[0];
 		makeNodes();
 		makeGround();
 		makeSky();
@@ -124,22 +125,27 @@ public class GraphicsHelper extends AbstractAppState {
 	}
 
 	public void removeCube(Geometry cube) {
+		App.getPhysicsHelper().removeCube(cube);
 		cubes.detachChild(cube);
 	}
 
 	public void addCube(Vector3f center) {
 		System.out.println(center);
-		addCube(center, "grass");
+		if(App.getGameHelper().addCube(activeCube))
+		{
+		addCube(center, activeCube);
+		}
 	}
 
 	public void addCube(Vector3f center, String name) {
 		Box box = new Box(center, 1, 1, 1);
-		Geometry cube = new Geometry(String.valueOf(name), box);
+		Geometry cube = new Geometry(name, box);
 		Material material = new Material(app.getAssetManager(),
-				"Common/MatDefs/Misc/Unshaded.j3md");
+				"Common/MatDefs/Light/Lighting.j3md");
 		Texture texture = app.getAssetManager().loadTexture(
 				App.getConfigHelper().getCubeTextureUrl(name));
-		material.setTexture("ColorMap", texture);
+		System.out.println(App.getConfigHelper().getCubeTextureUrl(name));
+		material.setTexture("DiffuseMap", texture);
 		cube.setMaterial(material);
 		cubes.attachChild(cube);
                 App.getPhysicsHelper().addPhysics(cube, 0.0f);
@@ -182,6 +188,7 @@ public class GraphicsHelper extends AbstractAppState {
 	public void setCube(String cube)
 	{
 		activeCube=cube;
+		System.out.println(activeCube);
 	}
 	public boolean isCubesChooserActive()
 	{

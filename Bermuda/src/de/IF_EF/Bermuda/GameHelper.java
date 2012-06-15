@@ -43,5 +43,7 @@ public class GameHelper {
 		Quest quest = quests[questCount];
 		// App.getGraphicsHelper().setText(quest.getText());
 	}
+	
+	
 
 }
