@@ -14,6 +14,7 @@ import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
@@ -144,6 +145,9 @@ public class GraphicsHelper extends AbstractAppState {
 	}
 
 	public void addCube(Vector3f center, String name) {
+                int x = (int) center.getX(); x -= x%16;
+                int y = (int) center.getY(); y -= y%16;
+                int z = (int) center.getZ(); z -= z%16;
 		Box box = new Box(center, 1, 1, 1);
 		Geometry cube = new Geometry(name, box);
 		Material material = new Material(app.getAssetManager(),
@@ -153,7 +157,20 @@ public class GraphicsHelper extends AbstractAppState {
 		System.out.println(App.getConfigHelper().getCubeTextureUrl(name));
 		material.setTexture("DiffuseMap", texture);
 		cube.setMaterial(material);
-		cubes.attachChild(cube);
+                String nodeName = new String();
+                nodeName += x;
+                nodeName += y;
+                nodeName += z;
+		if(cubes.getChild( nodeName ) != null) { 
+                    Node n = (Node) cubes.getChild( nodeName );
+                    n.attachChild(cube);
+                    System.out.println(n);
+                } else {
+                    Node n = new Node(nodeName);
+                    n.attachChild(cube);
+                    cubes.attachChild(n);
+                    System.out.println(n);     
+                }
                 App.getPhysicsHelper().addPhysics(cube, 0.0f);
 	}
 	
