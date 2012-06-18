@@ -2,6 +2,8 @@ package de.IF_EF.Bermuda;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.ThreadingManager;
+import com.jme3.export.binary.BinaryExporter;
+import com.jme3.export.binary.BinaryImporter;
 import com.jme3.font.BitmapFont;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.JoyInput;
@@ -19,6 +21,8 @@ import com.jme3.system.JmeContext;
 import com.jme3.system.JmeContext.Type;
 import com.jme3.system.SystemListener;
 import com.jme3.system.Timer;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -68,12 +72,25 @@ public class App extends SimpleApplication {
 		pickHelper = new PickHelper(cam, this.getInputManager());
 		
 	}
-
+        
 	@Override
 	public void simpleUpdate(float tpf) {
 		super.simpleUpdate(tpf);
 
 	}
+        
+        @Override
+        public void destroy() {
+                String userHome = System.getProperty("user.home");
+                BinaryExporter exporter = BinaryExporter.getInstance();
+                File file = new File(userHome+"/Bermuda/save.j3o");
+                try {
+                     exporter.save(rootNode.getChild("cubes"), file);
+                } catch (IOException ex) {
+                    System.out.println("save failed miserably");
+                }
+                System.out.println("saved");
+        }
 
 	public static GameHelper getGameHelper() {
 		return gameHelper;

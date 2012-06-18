@@ -3,6 +3,8 @@ package de.IF_EF.Bermuda;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.export.binary.BinaryExporter;
+import com.jme3.export.binary.BinaryImporter;
 import com.jme3.font.BitmapText;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
@@ -21,6 +23,10 @@ import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
 
 import de.lessvoid.nifty.Nifty;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Klasse fÃ¼r die Kommunikation zwischen Logik und Bildschirmausgabe
@@ -46,13 +52,13 @@ public class GraphicsHelper extends AbstractAppState {
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
-		super.initialize(stateManager, app);
 		activeCube=App.getConfigHelper().getCubeVariants()[0];
 		makeNodes();
 		makeGround();
 		makeSky();
 		addLight();
 		makeCrossHairs();
+                super.initialize(stateManager, app);
 
 	}
 
@@ -66,9 +72,13 @@ public class GraphicsHelper extends AbstractAppState {
 
 	protected void makeNodes() {
 		root = new Node("root");
-		cubes = new Node("cubes");
-		app.getRootNode().attachChild(root);
-		root.attachChild(cubes);
+                String userHome = System.getProperty("user.home");
+                File file = new File(userHome+"/Bermuda/save.j3o");
+                if(!file.exists()) {
+                    cubes = new Node("cubes");
+                    app.getRootNode().attachChild(root);
+                    root.attachChild(cubes);
+                }
 	}
 
 	protected void makeGround() {
@@ -87,9 +97,29 @@ public class GraphicsHelper extends AbstractAppState {
 		floor.setMaterial(mat1);
 		root.attachChild(floor);
 		App.getPhysicsHelper().addPhysics(floor, 0.0f);*/
-                for( int i = -16; i <= 16; i++ )  { for ( int j = -8; j <= 8; j++ ) { for ( int k = -16; k <= 16; k++ ) { addCube( new Vector3f(i, j, k), "grass"); }}}
-	}
+                String userHome = System.getProperty("user.home");
+                BinaryImporter importer = BinaryImporter.getInstance();
+                importer.setAssetManager(app.getAssetManager());
+                File file = new File(userHome+"/Bermuda/save.j3o");
+                if(file.exists()){
+                    try {
+                        cubes = (Node)importer.load(file);
+                        cubes.setName("cubes");
+                        root.attachChild(cubes);
+                    } catch (IOException ex) {
+                           
+                }
+                for ( Spatial s : cubes.getChildren() ) {
+                    Node n = (Node) s;
+                    for( Spatial s2 : n.getChildren() ) {
+                        Geometry g = (Geometry) s2;
+                        App.getPhysicsHelper().addPhysics(g, 0.0f);
+                    }            
+                }
+                } else {
+                for( int i = -16; i <= 16; i++ )  { for ( int j = -8; j <= 8; j++ ) { for ( int k = - 16; k <= 16; k++ ) { addCube( new Vector3f(i, j, k), "grass"); }}}}
 
+                }
 	protected void makeSky() {
 		app.getRootNode().attachChild(
 				SkyFactory.createSky(app.getAssetManager(), App
@@ -131,7 +161,11 @@ public class GraphicsHelper extends AbstractAppState {
 
 	public void removeCube(Geometry cube) {
 		App.getPhysicsHelper().removePhysics(cube);
-		cubes.detachChild(cube);
+                Node n;
+		for ( Spatial s : cubes.getChildren()) {
+                    n = (Node) s;
+                    n.detachChild(cube);
+                }
 	}
 
 	public void addCube(Vector3f center) {
@@ -161,7 +195,7 @@ public class GraphicsHelper extends AbstractAppState {
                 nodeName += x;
                 nodeName += y;
                 nodeName += z;
-		if(cubes.getChild( nodeName ) != null) { 
+		if( cubes.getChild( nodeName ) != null) { 
                     Node n = (Node) cubes.getChild( nodeName );
                     n.attachChild(cube);
                     System.out.println(n);
@@ -169,7 +203,7 @@ public class GraphicsHelper extends AbstractAppState {
                     Node n = new Node(nodeName);
                     n.attachChild(cube);
                     cubes.attachChild(n);
-                    System.out.println(n);     
+                    System.out.println(n);
                 }
                 App.getPhysicsHelper().addPhysics(cube, 0.0f);
 	}
