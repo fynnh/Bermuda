@@ -12,7 +12,6 @@ public class ConfigDummy {
 	private String[] cubevariants;
 	private HashMap<String, Integer> inventar;
 	private Quest[] quests;
-	private int questCount;
 
 	public ConfigDummy() {
 		groundX = 1000;
@@ -28,8 +27,10 @@ public class ConfigDummy {
 		inventar = new HashMap<String, Integer>();
 		inventar.put("grass", 1000);
 		inventar.put("earth", 1000);
-		quests = null;
-		questCount = 0;
+		quests = new Quest[2];
+		quests[0]=new Quest(10,0,"Baue 10 Blöcke!");
+		quests[1]=new Quest(10,0,"Baue 20 Blöcke!");
+		
 
 	}
 
@@ -77,9 +78,6 @@ public class ConfigDummy {
 		return quests;
 	}
 
-	public int getQuestCount() {
-		return questCount;
-	}
 
 	public String[] getCubeVariants()
 	{

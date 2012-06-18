@@ -69,7 +69,7 @@ public class PickHelper implements ActionListener, AnalogListener {
                                         System.out.println( health );
                                     } else {
                                         currCube = results.getClosestCollision().getGeometry();
-                                        health = 480;
+                                        health = 120;
                                     }
 				}
 			}}}
