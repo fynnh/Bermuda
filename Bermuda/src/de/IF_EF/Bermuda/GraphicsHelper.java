@@ -71,7 +71,7 @@ public class GraphicsHelper extends AbstractAppState {
 	}
 
 	protected void makeGround() {
-		Box box = new Box(new Vector3f(0, -5, -5), App.getConfigHelper()
+		/*Box box = new Box(new Vector3f(0, -5, -5), App.getConfigHelper()
 				.getGroundX(), .2f, App.getConfigHelper().getGroundZ());
 		Geometry floor = new Geometry("ground", box);
 		Material mat1 = new Material(app.getAssetManager(),
@@ -85,7 +85,8 @@ public class GraphicsHelper extends AbstractAppState {
 		// mat1.setColor("Diffuse", ColorRGBA.Brown);
 		floor.setMaterial(mat1);
 		root.attachChild(floor);
-		App.getPhysicsHelper().addPhysics(floor, 0.0f);
+		App.getPhysicsHelper().addPhysics(floor, 0.0f);*/
+                for( int i = -16; i <= 16; i++ )  { for ( int j = -8; j <= 8; j++ ) { for ( int k = -16; k <= 16; k++ ) { addCube( new Vector3f(i, j, k), "grass"); }}}
 	}
 
 	protected void makeSky() {

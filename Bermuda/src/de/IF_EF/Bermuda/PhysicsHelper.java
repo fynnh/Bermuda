@@ -29,6 +29,7 @@ public class PhysicsHelper extends BulletAppState {
     public PhysicsHelper(App app) {
         super();
         stateManager = app.getStateManager();
+        setThreadingType(threadingType.PARALLEL);
     }
     
 
@@ -45,7 +46,7 @@ public class PhysicsHelper extends BulletAppState {
         this.app = app;
         graphicsHelper = App.getGraphicsHelper();
         initCamera();
-        getPhysicsSpace().enableDebug(app.getAssetManager());
+        //getPhysicsSpace().enableDebug(app.getAssetManager());
     }
 
     private void initCamera() {

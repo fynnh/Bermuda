@@ -65,7 +65,7 @@ public class GameHelper {
 			}
 			else
 			{
-				System.out.println("Sämtliche Quests sind erfüllt");
+				System.out.println("Sï¿½mtliche Quests sind erfï¿½llt");
 			}
 		}
 	}

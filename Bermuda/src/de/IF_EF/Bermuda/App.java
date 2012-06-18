@@ -1,6 +1,7 @@
 package de.IF_EF.Bermuda;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.asset.ThreadingManager;
 import com.jme3.font.BitmapFont;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.JoyInput;
@@ -18,6 +19,7 @@ import com.jme3.system.JmeContext;
 import com.jme3.system.JmeContext.Type;
 import com.jme3.system.SystemListener;
 import com.jme3.system.Timer;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * Klasse der Anwendung
@@ -49,6 +51,7 @@ public class App extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
+                
 		// PreConfig con = new PreConfig();
 		// configHelper = new ConfigHelper();
 		configHelper = new ConfigDummy();
