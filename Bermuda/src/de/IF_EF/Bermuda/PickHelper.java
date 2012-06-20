@@ -76,6 +76,7 @@ public class PickHelper implements ActionListener, AnalogListener {
 
     public void onAction(String name, boolean isPressed, float tpf) {
         if (name.equals("Add") && !isPressed) {
+                                System.out.println(cam.getLocation());
 
 				// 1. Reset results list.
 				CollisionResults results = new CollisionResults();

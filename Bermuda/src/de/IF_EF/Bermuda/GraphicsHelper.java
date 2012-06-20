@@ -18,6 +18,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Cylinder;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
@@ -52,12 +53,14 @@ public class GraphicsHelper extends AbstractAppState {
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app) {
-		activeCube=App.getConfigHelper().getCubeVariants()[0];
+		activeCube = App.getConfigHelper().getCubeVariants()[0];
 		makeNodes();
 		makeGround();
 		makeSky();
 		addLight();
 		makeCrossHairs();
+                //initNPC();
+                App.getPhysicsHelper().initCamera();
                 super.initialize(stateManager, app);
 
 	}
@@ -72,54 +75,41 @@ public class GraphicsHelper extends AbstractAppState {
 
 	protected void makeNodes() {
 		root = new Node("root");
+                app.getRootNode().attachChild(root);
                 String userHome = System.getProperty("user.home");
                 File file = new File(userHome+"/Bermuda/save.j3o");
                 if(!file.exists()) {
                     cubes = new Node("cubes");
-                    app.getRootNode().attachChild(root);
                     root.attachChild(cubes);
                 }
 	}
 
 	protected void makeGround() {
-		/*Box box = new Box(new Vector3f(0, -5, -5), App.getConfigHelper()
-				.getGroundX(), .2f, App.getConfigHelper().getGroundZ());
-		Geometry floor = new Geometry("ground", box);
-		Material mat1 = new Material(app.getAssetManager(),
-				"Common/MatDefs/Light/Lighting.j3md");
-		// mat1.setBoolean("UseMaterialColors", true);
-		Texture texture = app.getAssetManager().loadTexture(
-				App.getConfigHelper().getGroundTextureUrl());
-		texture.setWrap(WrapMode.Repeat);
-		box.scaleTextureCoordinates(new Vector2f(1000, 1000));
-		mat1.setTexture("DiffuseMap", texture);
-		// mat1.setColor("Diffuse", ColorRGBA.Brown);
-		floor.setMaterial(mat1);
-		root.attachChild(floor);
-		App.getPhysicsHelper().addPhysics(floor, 0.0f);*/
                 String userHome = System.getProperty("user.home");
                 BinaryImporter importer = BinaryImporter.getInstance();
                 importer.setAssetManager(app.getAssetManager());
                 File file = new File(userHome+"/Bermuda/save.j3o");
                 if(file.exists()){
-                    try {
+                   try {
                         cubes = (Node)importer.load(file);
                         cubes.setName("cubes");
                         root.attachChild(cubes);
                     } catch (IOException ex) {
                            
-                }
-                for ( Spatial s : cubes.getChildren() ) {
-                    Node n = (Node) s;
-                    for( Spatial s2 : n.getChildren() ) {
-                        Geometry g = (Geometry) s2;
-                        App.getPhysicsHelper().addPhysics(g, 0.0f);
-                    }            
-                }
+                    }
+                    for ( Spatial s : cubes.getChildren() ) {
+                        Node n = (Node) s;
+                        for( Spatial s2 : n.getChildren() ) {
+                            Geometry g = (Geometry) s2;
+                            App.getPhysicsHelper().addPhysics(g, 0.0f);
+                        }            
+                    }
                 } else {
-                for( int i = -16; i <= 16; i++ )  { for ( int j = -8; j <= 8; j++ ) { for ( int k = - 16; k <= 16; k++ ) { addCube( new Vector3f(i, j, k), "grass"); }}}}
-
+                    for( int i = -16; i <= 16; i++ )  { for ( int j = -8; j <= 8; j++ ) { for ( int k = - 16; k <= 16; k++ ) { addCube( new Vector3f(i, j, k), "grass"); }}}
                 }
+            }
+        
+        
 	protected void makeSky() {
 		app.getRootNode().attachChild(
 				SkyFactory.createSky(app.getAssetManager(), App
@@ -150,6 +140,18 @@ public class GraphicsHelper extends AbstractAppState {
                 AmbientLight amb = new AmbientLight();
                 amb.setColor(ColorRGBA.DarkGray);
 	}
+        
+        public void initNPC () {
+            Box test = new Box(new Vector3f(10, 10, 10), 1, 2, 1);
+            Geometry cube = new Geometry("test", test);
+            Material material = new Material(app.getAssetManager(),
+				"Common/MatDefs/Light/Lighting.j3md");
+            material.setBoolean("UseMaterialColors", true);
+            material.setColor("Diffuse", ColorRGBA.Red);
+            cube.setMaterial(material);
+            App.getPhysicsHelper().addNPC(cube, 1.0f, 2.0f, 100, 20);
+            root.attachChild(cube);
+        }
 
 	public Node getCubesNode() {
 		return cubes;

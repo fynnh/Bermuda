@@ -84,6 +84,7 @@ public class App extends SimpleApplication {
                 String userHome = System.getProperty("user.home");
                 BinaryExporter exporter = BinaryExporter.getInstance();
                 File file = new File(userHome+"/Bermuda/save.j3o");
+                System.out.println("saving");
                 try {
                      exporter.save(rootNode.getChild("cubes"), file);
                 } catch (IOException ex) {

@@ -3,9 +3,13 @@ package de.IF_EF.Bermuda;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.collision.shapes.HullCollisionShape;
+import com.jme3.bullet.collision.shapes.SimplexCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
+import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.input.FlyByCamera;
@@ -45,18 +49,30 @@ public class PhysicsHelper extends BulletAppState {
         super.initialize(stateManager, app);
         this.app = app;
         graphicsHelper = App.getGraphicsHelper();
-        initCamera();
+        //initCamera();
         //getPhysicsSpace().enableDebug(app.getAssetManager());
     }
 
-    private void initCamera() {
+    public void initCamera() {
         CapsuleCollisionShape cam = new CapsuleCollisionShape(1.2f, 1.8f);
         playerCam = new CharacterControl(cam, 0.1f);
         playerCam.setJumpSpeed(7);
         playerCam.setGravity(10);
         playerCam.setFallSpeed(10);
         playerCam.setPhysicsLocation(new Vector3f(0, 10, 0));
+        playerCam.setCollisionGroup(PhysicsCollisionObject.COLLISION_GROUP_02);
         this.getPhysicsSpace().add(playerCam);
+        
+    }
+    
+    public void addNPC(Geometry geo, float radius, float height, int health, int damage) {
+        CollisionShape coll = new CapsuleCollisionShape(radius, height);
+        RigidBodyControl rig = new RigidBodyControl(coll, 1.0f);
+        GhostControl NPC = new GhostControl(coll);
+        geo.addControl(NPC);
+        geo.addControl(rig);
+        getPhysicsSpace().add(rig);
+        getPhysicsSpace().add(NPC);
     }
     
     public void moveCamera(boolean[] dir) {
@@ -95,5 +111,9 @@ public class PhysicsHelper extends BulletAppState {
         geo.removeControl(RigidBodyControl.class);
     }
     
-
+    public CharacterControl getPlayer() {
+        return playerCam;
+    }
+    
 }
+
