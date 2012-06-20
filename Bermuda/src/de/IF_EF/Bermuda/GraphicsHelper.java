@@ -60,7 +60,6 @@ public class GraphicsHelper extends AbstractAppState {
 		addLight();
 		makeCrossHairs();
                 //initNPC();
-                App.getPhysicsHelper().initCamera();
                 super.initialize(stateManager, app);
 
 	}

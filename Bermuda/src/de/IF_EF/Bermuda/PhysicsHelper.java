@@ -49,7 +49,7 @@ public class PhysicsHelper extends BulletAppState {
         super.initialize(stateManager, app);
         this.app = app;
         graphicsHelper = App.getGraphicsHelper();
-        //initCamera();
+        initCamera();
         //getPhysicsSpace().enableDebug(app.getAssetManager());
     }
 
