@@ -68,7 +68,7 @@ public class PhysicsHelper extends BulletAppState {
     public void addNPC(Geometry geo, float radius, float height, int health, int damage) {
         CollisionShape coll = new CapsuleCollisionShape(radius, height);
         RigidBodyControl rig = new RigidBodyControl(coll, 1.0f);
-        GhostControl NPC = new GhostControl(coll);
+        CharacterControl NPC = new CharacterControl(coll, 1.0f);
         geo.addControl(NPC);
         geo.addControl(rig);
         getPhysicsSpace().add(rig);

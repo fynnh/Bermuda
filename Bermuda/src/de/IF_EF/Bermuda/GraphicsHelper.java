@@ -59,7 +59,7 @@ public class GraphicsHelper extends AbstractAppState {
 		makeSky();
 		addLight();
 		makeCrossHairs();
-                //initNPC();
+                initNPC();
                 super.initialize(stateManager, app);
 
 	}
